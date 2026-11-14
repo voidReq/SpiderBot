@@ -1,4 +1,4 @@
- /**
+/**
  * @file   Motor.cpp
  * @Author Richard, Modified by: John Kimani (j.kimani@northeastern.edu)
  * @date   Modified on: 11/01/2025
@@ -46,7 +46,7 @@ Motor::~Motor() {
  * calling the specific function Move(...).
  */
 void Motor::Reset(void){
-	Move(0.0);
+	Move(0.0);	// move to the neutral 0 degree position
 }
 
 /**
@@ -55,7 +55,7 @@ void Motor::Reset(void){
 */
 bool Motor::IsReady(void)
 {
-	return mmio->RegisterRead(szPWM_Base[m_nMotorID] + REG_ADJ_STATUS) & 0x1;
+	return mmio->RegisterRead(szPWM_Base[m_nMotorID] + REG_ADJ_STATUS) & 0x1;	// bit 0 of the status register is 1 when the motor is ready
 }
 
 /**
@@ -63,7 +63,7 @@ bool Motor::IsReady(void)
  */
 float Motor::GetfAngle(void)
 {
-	return motor_angle;
+	return motor_angle;	// last angle set by Move()
 }
 
 /**
@@ -74,11 +74,11 @@ float Motor::GetfAngle(void)
  */
 void Motor::SetSpeed(int speed)
 {
-	if (speed > SPEED_MAX) speed = SPEED_MAX;
-	if (speed < SPEED_MIN) speed = SPEED_MIN;
+	if (speed > SPEED_MAX) speed = SPEED_MAX;	// limit speed to SPEED_MAX
+	if (speed < SPEED_MIN) speed = SPEED_MIN;	// limit speed to SPEED_MIN
 
 	motor_speed = DELAY_MAX - (DELAY_MAX - DELAY_MIN) * speed / SPEED_MAX; // prelab 2: 1700-(700)*speed/100
-	mmio->RegisterWrite(szPWM_Base[m_nMotorID] + REG_ADJ_SPEED, motor_speed);
+	mmio->RegisterWrite(szPWM_Base[m_nMotorID] + REG_ADJ_SPEED, motor_speed);	// write the new delay to the speed register
 }
 
 /**
@@ -86,7 +86,7 @@ void Motor::SetSpeed(int speed)
  */
 uint32_t Motor::GetSpeed(void)
 {
-	return motor_speed;
+	return motor_speed;	// current delay in cycles (higher delay = slower)
 }
 
 /**
@@ -98,10 +98,10 @@ uint32_t Motor::GetSpeed(void)
  *  Compute PWM duty cycle with your algorithm before writing to register
  */
 void Motor::Move(float fAngle) {
-	if (fAngle > DEGREE_MAX) fAngle = DEGREE_MAX;
-	if (fAngle < DEGREE_MIN) fAngle = DEGREE_MIN;
+	if (fAngle > DEGREE_MAX) fAngle = DEGREE_MAX;	// limit angle to DEGREE_MAX
+	if (fAngle < DEGREE_MIN) fAngle = DEGREE_MIN;	// limit angle to DEGREE_MIN
 	if (fAngle == 0.0f) fAngle = 0.0f;	// -0.0 -> 0.0
-	motor_angle = fAngle;
+	motor_angle = fAngle;	// save the angle before it gets mirrored
 
 	if (m_nMotorID < 9) fAngle = -fAngle;	// right legs are mirrored
 

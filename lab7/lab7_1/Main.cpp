@@ -23,19 +23,19 @@ int main(int argc, char *argv[]){
 	MMap *m_map = new MMap();
 	LEDControl *pio = new LEDControl(m_map);
 
-	int motorID = -1;
-	while (motorID < 0 || motorID > 17) {
+	int motorID = -1;	// start invalid so the loop asks at least once
+	while (motorID < 0 || motorID > 17) {	// keep asking until the ID is 0-17
 		cout << "Enter motor ID (0-17): ";
-		if (!(cin >> motorID)) {
-			cin.clear();
-			cin.ignore(256, '\n');
+		if (!(cin >> motorID)) {	// input wasn't a number
+			cin.clear();			// reset cin so it can read again
+			cin.ignore(256, '\n');	// throw away the bad input
 			motorID = -1;
 		}
 	}
-	Motor *motor = new Motor(m_map, motorID);
+	Motor *motor = new Motor(m_map, motorID);	// dynamic Motor object for the chosen servo, starts at 0 degrees
 
 	cout << "KEY0 -15 deg, KEY1 +15 deg" << endl;
-	while (true) {
+	while (true) {	// keep checking the buttons until the spider is powered off
 		for (int key = 0; key < 2; key++) { // constantly check the two buttons "simultaneously" -- not
 			if (!pio->ReadButton(key)) continue; // no press, recheck
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 
 			while (pio->ReadButton(key)) usleep(10000);	// wait for release of button
 		}
-		usleep(10000);
+		usleep(10000);	// short delay between button checks
 	}
 
 	delete motor; // destruct

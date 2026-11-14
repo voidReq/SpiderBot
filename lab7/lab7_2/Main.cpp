@@ -24,7 +24,7 @@ const float POSES[][SpiderLeg::JOINT_NUM] = {
 	{ 30,  0,  0},	// lower
 	{-30,  0,  15},	// push right
 };
-const int NUM_POSES = sizeof(POSES) / sizeof(POSES[0]);
+const int NUM_POSES = sizeof(POSES) / sizeof(POSES[0]);	// number of poses in the sequence
 
 int main(int argc, char *argv[]){
 
@@ -32,12 +32,12 @@ int main(int argc, char *argv[]){
 	MMap *m_map = new MMap();
 	LEDControl *pio = new LEDControl(m_map);
 
-	int legID = -1;
-	while (legID < 0 || legID > 5) {
+	int legID = -1;	// start invalid so the loop asks at least once
+	while (legID < 0 || legID > 5) {	// keep asking until the leg is 0-5
 		cout << "Enter leg (0=RF 1=RM 2=RB 3=LF 4=LM 5=LB): ";
-		if (!(cin >> legID)) {
-			cin.clear();
-			cin.ignore(256, '\n');
+		if (!(cin >> legID)) {	// input wasn't a number
+			cin.clear();			// reset cin so it can read again
+			cin.ignore(256, '\n');	// throw away the bad input
 			legID = -1;
 		}
 	}
@@ -45,12 +45,12 @@ int main(int argc, char *argv[]){
 											// *3 + n accounts for 3 motors / leg
 
 	cout << "Stepping, power off to stop" << endl;
-	while (true) {
-		for (int p = 0; p < NUM_POSES; p++) {
+	while (true) {	// repeat the step sequence until the spider is powered off
+		for (int p = 0; p < NUM_POSES; p++) {	// go through each pose in order
 			while (!leg->IsReady()) usleep(1000); // don't PWM til all joints done
-			for (int j = 0; j < SpiderLeg::JOINT_NUM; j++)
+			for (int j = 0; j < SpiderLeg::JOINT_NUM; j++)	// set each joint (hip, knee, ankle) for this pose
 				leg->MoveJoint((SpiderLeg::JOINT_ID)j, POSES[p][j]); // iter thru arr def ln 20
-			usleep(PAUSE);
+			usleep(PAUSE);	// pause before the next pose
 		}
 	}
 

@@ -1,4 +1,4 @@
- /**
+/**
  * @file   SpiderLeg.cpp
  * @Author Richard, Modified by: John Kimani (j.kimani@northeastern.edu)
  * @date   Modified on: 11/01/2025
@@ -33,7 +33,7 @@ SpiderLeg::~SpiderLeg() {
  * Reset the 3 joints on the Leg
  */
 void SpiderLeg::Reset(void) {
-	for(int i=0;i<JOINT_NUM;i++){
+	for(int i=0;i<JOINT_NUM;i++){	// go through all 3 joints
 		m_szMotor[i]->Reset(); // rst each motor
 	}
 }
@@ -49,11 +49,11 @@ void SpiderLeg::MoveJoint(JOINT_ID JointID, float fAngle){
  *  Check if all the joints on the Leg are ready
  */
 bool SpiderLeg::IsReady(void){
-	for(int i=0;i<JOINT_NUM;i++){
-		if(!m_szMotor[i]->IsReady())
+	for(int i=0;i<JOINT_NUM;i++){	// check each joint
+		if(!m_szMotor[i]->IsReady())	// if any joint is still moving
 			return false; // ensure all ready
 	}
-	return true;
+	return true;	// all 3 joints are ready
 }
 
 /**
@@ -61,7 +61,7 @@ bool SpiderLeg::IsReady(void){
  */
 float SpiderLeg::GetfAngle(JOINT_ID JointID)
 {
-	return m_szMotor[JointID]->GetfAngle();
+	return m_szMotor[JointID]->GetfAngle();	// angle of the specified joint
 }
 
 /**
@@ -69,7 +69,7 @@ float SpiderLeg::GetfAngle(JOINT_ID JointID)
  */
 void SpiderLeg::SetSpeed(JOINT_ID JointID, int Speed)
 {
-	m_szMotor[JointID]->SetSpeed(Speed);
+	m_szMotor[JointID]->SetSpeed(Speed);	// set the speed of the specified joint
 }
 
 /**
@@ -77,6 +77,5 @@ void SpiderLeg::SetSpeed(JOINT_ID JointID, int Speed)
  */
 uint32_t SpiderLeg::GetSpeed(JOINT_ID JointID)
 {
-	return m_szMotor[JointID]->GetSpeed();
+	return m_szMotor[JointID]->GetSpeed();	// speed of the specified joint
 }
-

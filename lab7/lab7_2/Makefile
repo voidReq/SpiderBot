@@ -15,6 +15,7 @@ server: server.o
 client: client.o
 	$(CC) $(LDFLAGS) $^ -o $@
 
+# added SpiderLeg.o so the SpiderLeg class gets compiled and linked
 $(TARGET): Main.o MMap.o LEDControl.o Motor.o SpiderLeg.o 
 	$(CC) $(LDFLAGS)  $^ -o $@ 
 
