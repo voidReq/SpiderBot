@@ -1,9 +1,3 @@
-// Name: Georgy Rached and James Hanstedt
-// Date: November 13, 2026
-// EECE 2160 Lab 6 - Assignment 3: PushButton.cpp
-// Compile: g++ PushButton.cpp -o PushButton
-// Run: ./PushButton
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
