@@ -178,7 +178,7 @@ int main()
     char *pBase = Initialize(&fd);	// map the memory and get the base address
 
     cout << "\ninit counter" << endl;
-    cout << "KEY0: decr | KEY1: incr | KEY2: rshift | KEY3: lshift | Multi: rst to siwtches" << endl;
+    cout << "KEY0: incr | KEY1: decr | KEY2: rshift | KEY3: lshift | Multi: rst to siwtches" << endl;
 
     // init value from current switch states
     int counter = ReadAllSwitches(pBase);	// start the counter at the switch values
