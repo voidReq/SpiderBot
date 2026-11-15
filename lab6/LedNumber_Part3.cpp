@@ -149,7 +149,6 @@ void WriteAllLeds(char *pBase, int value){
     RegisterWrite(pBase, LEDR_BASE, value & 0x3FF);	// keep only the 10 LED bits
 }
 
-// --- Lab 6.3 Pushbutton Function ---
 /** 
  * Read the push buttons. 
  * 
@@ -184,11 +183,10 @@ int main()
     int fd;		// file descriptor for /dev/mem
     char *pBase = Initialize(&fd);	// map the memory and get the base address
 
-    // --- Lab 6.3: Push Button Counter Loop ---
-    cout << "\nStarting Lab 6.3 Counter..." << endl;
-    cout << "KEY0: +1 | KEY1: -1 | KEY2: Shift Right | KEY3: Shift Left | Multi: Reset to Switches" << endl;
+    cout << "\ninit counter" << endl;
+    cout << "KEY0: decr | KEY1: incr | KEY2: rshift | KEY3: lshift | Multi: rst to siwtches" << endl;
 
-    // Initial value from current switch states
+    // init value from current switch states
     int counter = ReadAllSwitches(pBase);	// start the counter at the switch values
     WriteAllLeds(pBase, counter);
     cout << "Initial counter: " << counter << endl;
@@ -198,7 +196,7 @@ int main()
     while (true) {
         int btn = PushButtonGet(pBase);
 
-        // Edge detection: only trigger once per press
+        // only trigger once per press
         if (btn != lastBtn) {
             if (btn != -1 && (lastBtn == -1 || btn == 4)) {	// new press, or multiple buttons
                 if (btn == 0) {
@@ -219,9 +217,9 @@ int main()
             lastBtn = btn;
         }
 
-        usleep(20000); // 20ms delay for debouncing
+        usleep(20000); // 20ms debounce
     }
 
-    // Done
+    // Done/kill
     Finalize(pBase, fd);
 }
