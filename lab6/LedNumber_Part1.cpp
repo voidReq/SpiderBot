@@ -32,3 +32,23 @@ void Write1Led(char *pBase, int ledNum, int state){
     }
     RegisterWrite(pBase, LEDR_BASE, curLeds); //writes the updated value back to the LEDs
 }
+
+int main(){
+	// Initialize
+	int fd;
+	char *pBase = Initialize(&fd); 
+
+	int value = 0;
+
+	cout << "Enter LED to read (0..9): " << endl;
+	cin >> value;
+	int res = Read1Switch(pBase, value);
+	cout << "Val of switch: " << res << endl;
+	cout << "Enter LED to write (0..9): " << endl;
+	cin >> value;
+	cout << "Enter LED state (0 or 1): " << endl; cin >> res;
+	Write1Led(pBase, value, res);
+	cout << "Written" << endl;
+	Finalize(pBase, fd);
+}
+

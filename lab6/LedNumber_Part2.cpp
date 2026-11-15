@@ -7,3 +7,15 @@
 int ReadAllSwitches(char *pBase){
     return RegisterRead(pBase, SW_BASE) & 0x3FF; //ANDs with 0x3FF (1111111111) to only keep the 10 switch bits, giving 0-1023
 }
+
+int main(){
+	// Initialize
+	int fd;
+	char *pBase = Initialize(&fd); 
+
+	int allSwitches = ReadAllSwitches(pBase);
+	cout << "All switches: " << allSwitches << endl;
+	WriteAllLeds(pBase, 500);
+	Finalize(pBase, fd);
+}
+
